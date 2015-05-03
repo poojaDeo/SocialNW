@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Social Nexus</title>
+
+<style>
+body {
+    background-color: #FFFFA3;
+}
+
+#appname {
+text-align: center;
+font-size: 100px;
+color: #111111;
+}
+
+#headback {
+background-image: url("nexus.jpg");
+height: 175px;
+width: auto;
+}
+
+#gConnect {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 30px;
+    width: 40px;
+    
+}
+
+#linkedin {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 20px;
+    width: 40px;
+    
+}
+
+#facebook {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 30px;
+    width: 40px;
+    
+</style>
+<!-- Javascript for Google plus-->
+<script src="https://apis.google.com/js/client:platform.js?onload=startApp" async defer></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" ></script>
+<meta name="google-signin-client_id" content="508086139160-mc1kt92jqr7vvu6cnkefpsj2c9oi3mm0.apps.googleusercontent.com"></meta>
+<script type="text/javascript">
+
+/**
+ * Handler for when the sign-in state changes.
+ *
+ * @param {boolean} isSignedIn The new signed in state.
+ */
+var updateSignIn = function() {
+  console.log('update sign in state');
+  if (auth2.isSignedIn.get()) {
+    console.log('signed in');
+    helper.onSignInCallback(gapi.auth2.getAuthInstance());
+  }else{
+    console.log('signed out');
+    helper.onSignInCallback(gapi.auth2.getAuthInstance());
+  }
+}
+
+/**
+ * This method sets up the sign-in listener after the client library loads.
+ */
+function startApp() {
+  gapi.load('auth2', function() {
+    gapi.client.load('plus','v1').then(function() {
+      gapi.signin2.render('signin-button', {
+          scope: 'https://www.googleapis.com/auth/plus.login',
+          fetch_basic_profile: false });
+      gapi.auth2.init({fetch_basic_profile: false,
+          scope:'https://www.googleapis.com/auth/plus.login'}).then(
+            function (){
+              console.log('init');
+              auth2 = gapi.auth2.getAuthInstance();
+              auth2.isSignedIn.listen(updateSignIn);
+              auth2.then(updateSignIn());
+            });
+    });
+  });
+}
+</script>
+
+<!--Javascript for linkedin-->
+<script type="text/javascript" src="//platform.linkedin.com/in.js">
+    api_key: 77k7vcxljtgj0a
+    authorize: true
+    onLoad: onLinkedInLoad
+</script>
+
+<script type="text/javascript">
+    
+    // Setup an event listener to make an API call once auth is complete
+    function onLinkedInLoad() {
+        IN.Event.on(IN, "auth", getProfileData);
+    }
+
+    // Handle the successful return from the API call
+    function onSuccess(data) {
+        console.log(data);
+    }
+
+    // Handle an error response from the API call
+    function onError(error) {
+        console.log(error);
+    }
+
+    // Use the API call wrapper to request the member's basic profile data
+    function getProfileData() {
+        IN.API.Raw("/people/~").result(onSuccess).error(onError);
+    }
+</script>
+
+<!--Javascript for Facebook-->
+<script src="//connect.facebook.net/en_US/all.js"></script>
+<div id="fb-root"></div>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '368426456699068', // App ID
+      channelUrl : 'http://social-nexus-gplus.appspot.com/',
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+    };
+ 
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+ 
+
+function Login()
+    {
+ 
+        FB.login(function(response) {
+           if (response.authResponse) 
+           {
+                getUserInfo(); // Get User Information.
+ 
+            } else
+            {
+             console.log('Authorization failed.');
+            }
+         },{scope: 'email'});
+ 
+    }
+
+FB.Event.subscribe('auth.authResponseChange', function(response) 
+{
+     if (response.status === 'connected') 
+     {
+        //SUCCESS
+     }   
+     else if (response.status === 'not_authorized') 
+    {
+        //FAILED
+    } else
+    {
+        //UNKNOWN ERROR. Logged Out
+    }
+});
+</script>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '368426456699068', // Set YOUR APP ID
+      channelUrl : 'http://social-nexus-gplus.appspot.com/', // Channel File
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
+ 
+    FB.Event.subscribe('auth.authResponseChange', function(response) 
+    {
+     if (response.status === 'connected') 
+    {
+        document.getElementById("facebook").innerHTML +=  "<br>Connected to Facebook";
+        //SUCCESS
+ 
+    }    
+    else if (response.status === 'not_authorized') 
+    {
+        document.getElementById("facebook").innerHTML +=  "<br>Failed to Connect";
+ 
+        //FAILED
+    } else 
+    {
+        document.getElementById("facebook").innerHTML +=  "<br>Logged Out";
+ 
+        //UNKNOWN ERROR
+    }
+    }); 
+ 
+    };
+ 
+    function Login()
+    {
+ 
+        FB.login(function(response) {
+           if (response.authResponse) 
+           {
+                //
+            } else 
+            {
+             console.log('User cancelled login or did not fully authorize.');
+            }
+         },{scope: 'email,user_photos,user_videos'});
+ 
+    }
+ 
+  // Load the SDK asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+ 
+</script>
+</head>
+
+<body>
+<div id = "headback">
+<div id = "appname">SOCIAL NEXUS</div>
+</div>
+<div id="gConnect" align= "center">
+<div id="signin-button"></div>
+</div>
+<div id = "linkedin" align= "center"> 
+<script type="in/Login"></script>  
+</div>
+<div id = "facebook" align= "center">
+<img src="http://hayageek.com/examples/oauth/facebook/oauth-javascript/LoginWithFacebook.png" style="cursor:pointer;" onclick="Login()" height="30" width ="150"/>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,14 @@
+body {
+    background-color: #b0c4de;
+}
+
+#appname {
+text-align: center;
+}
+
+#headback {
+background-image: url("nexus.jpg");
+height: 500px;
+width: 500px;
+}
+

@@ -1,0 +1,29 @@
+application: social-nexus-gplus
+version: 1
+runtime: python27
+api_version: 1
+threadsafe : yes
+
+handlers:
+- url: /favicon.ico
+  static_files: favicon.ico
+  upload: favicon.ico
+
+- url: /nexus.jpg
+  static_files: nexus.jpg
+  upload: nexus.jpg
+
+- url: /login.css
+  static_files: login.css
+  upload: login.css
+
+- url: .*
+  static_files: index.html
+  upload: index.html
+
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
